@@ -1,0 +1,201 @@
+
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/aA/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="powerlevel10k/powerlevel10k"
+
+export NVM_DIR=~/.nvm
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+nvm use default
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+
+plugins=(
+  git
+  zsh-syntax-highlighting
+  osx
+  rake
+  zsh-autosuggestions
+  autojump
+  web-search
+  extract
+  last-working-dir
+  history
+)
+#incr plugin
+
+ source $ZSH/oh-my-zsh.sh
+# source $ZSH/custom/plugins/incr/incr*.zsh
+
+# User configuration
+
+# my awesomes alias
+alias eB="vi ~/.bashrc"
+alias eZ="vi ~/.zshrc"
+alias eN="vi ~/.config/nvim/init.vim"
+alias eV="vi ~/.vimrc"
+alias vi=~/nvim-osx64/bin/nvim
+alias vim=~/nvim-osx64/bin/nvim
+alias cl="clear"
+alias ls="ls -la"
+# for git
+alias gs="git status"
+alias gsm="git summary"
+alias ga='git add'
+alias gd='git diff'
+alias gf='git fetch'
+alias grv='git remote -v'
+alias grb='git rebase'
+alias gb='git branch'
+alias gba='git branch -a'
+alias gpl="git pull"
+alias gps="git push"
+alias gco="git checkout"
+alias gl="git log"
+alias gc="git commit -m"
+alias gm="git merge"
+# for tmux ide
+alias tk="tmux kill-server"
+alias tl="tmux ls"
+alias ide="tmux split-window -v -p 30 &&  tmux split-window -h -p 50"
+# for webpack
+alias build="npm run build"
+alias serve="npm run dev"
+alias df="nvm use default"
+# youtube download tool
+alias dl="youtube-dl-interactive"
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
+
+#_COLUMNS=$(tput cols)
+#_MESSAGE=" FBI Warining "
+#y=$(( ( $_COLUMNS - ${#_MESSAGE} )  / 2 ))
+#spaces=$(printf "%-${y}s" " ")
+
+#echo " "
+#echo -e "${spaces}\033[41;37;5m FBI WARNING \033[0m"
+#echo " "
+#_COLUMNS=$(tput cols)
+#_MESSAGE="Ferderal Law provides severe civil and criminal penalties for"
+#y=$(( ( $_COLUMNS - ${#_MESSAGE} )  / 2 ))
+#spaces=$(printf "%-${y}s" " ")
+#echo -e "${spaces}${_MESSAGE}"
+
+#_COLUMNS=$(tput cols)
+#_MESSAGE="the unauthorized reproduction, distribution, or exhibition of"
+#y=$(( ( $_COLUMNS - ${#_MESSAGE} )  / 2 ))
+#spaces=$(printf "%-${y}s" " ")
+#echo -e "${spaces}${_MESSAGE}"
+
+#_COLUMNS=$(tput cols)
+#_MESSAGE="copyrighted motion pictures (Title 17, United States Code,"
+#y=$(( ( $_COLUMNS - ${#_MESSAGE} )  / 2 ))
+#spaces=$(printf "%-${y}s" " ")
+#echo -e "${spaces}${_MESSAGE}"
+
+#_COLUMNS=$(tput cols)
+#_MESSAGE="Sections 501 and 508). The Federal Bureau of Investigation"
+#y=$(( ( $_COLUMNS - ${#_MESSAGE} )  / 2 ))
+#spaces=$(printf "%-${y}s" " ")
+#echo -e "${spaces}${_MESSAGE}"
+
+#_COLUMNS=$(tput cols)
+#_MESSAGE="investigates allegations of criminal copyright infringement"
+#y=$(( ( $_COLUMNS - ${#_MESSAGE} )  / 2 ))
+#spaces=$(printf "%-${y}s" " ")
+#echo -e "${spaces}${_MESSAGE}"
+
+#_COLUMNS=$(tput cols)
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+source /Users/aA/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
