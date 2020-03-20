@@ -1,3 +1,11 @@
+" __  ____   __  _   ___     _____ __  __ ____   ____
+"|  \/  \ \ / / | \ | \ \   / /_ _|  \/  |  _ \ / ___|
+"| |\/| |\ V /  |  \| |\ \ / / | || |\/| | |_) | |
+"| |  | | | |   | |\  | \ V /  | || |  | |  _ <| |___
+"|_|  |_| |_|   |_| \_|  \_/  |___|_|  |_|_| \_\\____|
+
+" Author: Vanisher
+
 if empty(glob('~/.config/nvim/autoload/plug.vim'))
 	silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
 				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -9,6 +17,22 @@ if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
 
+" 新文件自动生成作者信息说明注释
+autocmd BufNewFile *.js exec ":call SetTitle()"
+    func SetTitle()
+        call setline(1,"/**") 
+        call append(line("."), " *   Copyright (C) ".strftime("%Y")." All rights reserved.")
+        call append(line(".")+1, " *") 
+        call append(line(".")+2, " *   FileName      ：".expand("%:t")) 
+        call append(line(".")+3, " *   Author        ：Vanisher")
+        call append(line(".")+4, " *   Email         ：vansjt1995@gmail.con")
+        call append(line(".")+5, " *   Date          ：".strftime("%Y年%m月%d日")) 
+        call append(line(".")+6, " *   Description   ：") 
+        call append(line(".")+7, " */") 
+    endfunc
+"自动将光标定位到末尾"
+autocmd BufNewFile * normal G
+
 let &t_ut=''
 set autochdir
 
@@ -16,7 +40,8 @@ filetype off
 call plug#begin('~/.config/nvim/plugged')
 
 " === navigation
-Plug 'christoomey/vim-tmux-navigator'
+"Plug 'christoomey/vim-tmux-navigator'
+"Plug 'erikw/tmux-powerline'
 
 "=== airline
 Plug 'vim-airline/vim-airline'
@@ -43,6 +68,10 @@ Plug 'mattn/emmet-vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'yggdroot/indentline'
 
+" Genreal Highlighter
+Plug 'jaxbot/semantic-highlight.vim'
+Plug 'chrisbra/Colorizer' " Show colors with :ColorHighligh
+
 " === snippets
 Plug 'honza/vim-snippets'
 Plug 'ryanoasis/vim-devicons'
@@ -51,18 +80,26 @@ Plug 'ryanoasis/vim-devicons'
 " ===  Search
 Plug 'kien/ctrlp.vim'
 Plug 'rking/ag.vim'
+Plug 'osyo-manga/vim-anzu'
 
 Plug 'mhinz/vim-startify'
 Plug 'jeetsukumaran/vim-buffergator'
+Plug 'vim-scripts/BufOnly.vim'
 Plug 'anyakichi/vim-surround'
 
 " === markdown
-"Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
-"Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
-"Plug 'dkarter/bullets.vim', { 'for' :['markdown', 'vim-plug'] }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install_sync() }, 'for' :['markdown', 'vim-plug'] }
+Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
+Plug 'dkarter/bullets.vim', { 'for' :['markdown', 'vim-plug'] }
+
+"writting
+Plug 'junegunn/goyo.vim'
 
 " === coc server
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Undo Tree
+Plug 'mbbill/undotree'
 
 " === textObbjext
 Plug 'kshenoy/vim-signature'
@@ -81,14 +118,24 @@ Plug 'leafgarland/typescript-vim'
 Plug 'herringtondarkholme/yats.vim'
 Plug 'w0rp/ale'
 
+" dress
+ Plug 'theniceboy/eleline.vim'
+Plug 'bling/vim-bufferline'
+
+" Other visual enhancement
+Plug 'luochen1990/rainbow'
+"Plug 'mg979/vim-xtabline'
+Plug 'wincent/terminus'
+
 " === tabbar
 Plug 'godlygeek/tabular'
 
 " === theme
-Plug 'ayu-theme/ayu-vim'
-Plug 'kristijanhusak/vim-hybrid-material'
-Plug 'haishanh/night-owl.vim'
-
+"Plug 'kristijanhusak/vim-hybrid-material'
+"Plug 'ajmwagar/vim-deus'
+Plug 'tomasiser/vim-code-dark'
+Plug 'fcpg/vim-orbital'
+Plug 'alessandroyorba/sierra'
 "====shell
 "Plug 'shougo/vimshell.vim'
 call plug#end()
@@ -96,7 +143,6 @@ call plug#end()
 filetype plugin indent on
 
 "===================================== keybinding ==================================================
-
 "设置LEADER键
 let mapleader = " "
 
@@ -106,9 +152,6 @@ map <Right> <Nop>
 map <Up> <Nop>
 map <Down> <Nop>
 
-" 行首 行尾 0, $  太远
-noremap <C-h> 0
-noremap <C-l> $
 
 " 开头 结尾 跳转
 noremap <LEADER>e %
@@ -118,14 +161,26 @@ map S :w<CR>   "保存
 noremap <C-c> zz
 map s <nop>    "去除s键删除插入功能
 map Q :q<CR>   " 修改:q 回车退出
+
 noremap J 5j
 noremap K 5k
-"noremap H 5h
-"noremap L 5l
+
+" 行首 行尾 0, $  太远
+noremap <silent> H 0
+noremap <silent> L $
+
+" make Y to copy till the end of the line
+nnoremap Y y$
+
+" Copy to system clipboard
+vnoremap Y "+y
+
 
 " 快速行内移动
 "noremap W 5w
 noremap B 5b
+
+noremap <C-s> *
 
 " 在当前窗口下方打开一个终端
 noremap <LEADER>/ :set splitbelow<CR>:sp<CR>:term<CR>
@@ -175,11 +230,18 @@ map <Leader>sa ggVG"
 " 选中段落
 nnoremap <leader>v V`}
 
+" find and replace 全局查找替换模式
+noremap \s :%s//g<left><left>
+
+" Folding
+noremap <silent> <LEADER>o za
+
+
 " 打开neovim配置文件
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 
 " Open Startify
-noremap <LEADER>st :Startify<CR>
+noremap <LEADER>ss :Startify<CR>
 
 
 " Ale static check
@@ -187,6 +249,14 @@ nnoremap <Leader>c :ALEToggle<CR>
 nnoremap <Leader>J :ALENextWrap<CR>
 nnoremap <Leader>K :ALEPreviousWrap<CR>
 nnoremap <Leader>R :ALEFix<CR>
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+
+let g:ale_sign_error = '🔴'
+let g:ale_sign_warning = '💥'
+highlight clear ALEErrorSign
+highlight clear ALEWarningSign
 
 " Buffers mannager
 nnoremap <Leader>[ :BuffergatorMruCyclePrev<CR>
@@ -222,6 +292,7 @@ set selection=inclusive
 set wildmenu
 set mousemodel=popup
 "set t_Co=256 "256位色"
+"set termguicolors
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 显示相关for NeoVim
@@ -237,34 +308,29 @@ set mousemodel=popup
   endif
 
 "endif
-"===================================== colorscheme ==================================================
+"===================================== Theme ==================================================
 syntax enable
 
-" === ayu theme
-"let ayucolor="dark"
-"colorscheme ayu
-
-" === nightowl theme
-"colorscheme night-owl
-"let g:lightline = { 'colorscheme': 'nightowl' }
-
-" ===  solarized
-"colorscheme solarized
-"syntax enable
-"set background=dark
-
-" === material theme
-colorscheme hybrid_reverse
-"colorscheme hybrid_material
 let g:enable_bold_font = 1
 let g:enable_italic_font = 1
 let g:hybrid_transparent_background = 1
-set background=dark
+
+" set colorscheme dark mode
+"set background=dark    
+"colorscheme codedark
+"let g:deus_termcolors=256
+
+"let g:sierra_Pitch = 1
+"let g:sierra_Midnight = 1
+"let g:sierra_Twilight = 1
+"let g:sierra_Sunset = 1
+"colorscheme sierra
+colorscheme orbital
 
 
 " ===AirineTheme 设置状态栏主题风格
-"let g:airline_theme='hybrid'
-let g:airline_theme='deus'
+let g:airline_theme = 'orbital'
+"let g:airline_theme = 'codedark'
 let g:airline_powerline_fonts = 1
 let g:airline_section_z = '%t'
 let g:airline#extensions#syntastic#enabled = 1 " Disable syntastic info
@@ -307,7 +373,7 @@ set smarttab
 " 显示行号
 set number
 "显示相对行号
-set relativenumber
+"set relativenumber
 " 历史记录数
 set history=1000
 "搜索逐字符高亮
@@ -582,6 +648,9 @@ nnoremap <silent> gi <Plug>(coc-implementation)
 nnoremap <silent> gr <Plug>(coc-references)
 nnoremap <leader> rn <Plug>(coc-rename)
 
+" coc-translator
+nmap ts <Plug>(coc-translator-p)
+
 " === coc-prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 nnoremap <Leader>F :Prettier<CR>
@@ -593,15 +662,6 @@ let g:startify_lists = [
             \ { 'type': 'bookmarks', 'header': ['	 Bookmarks']			},
             \ { 'type': 'commands',	'header': ['	 Commands']			 },
             \ ]
-"let g:startify_custom_header = [
-"\ ' _   _        _  _          _____  _             _ ',
-"\ '| | | |  ___ | || |  ___   |_   _|(_) _ __ ___  | |',
-"\ '| |_| | / _ \| || | / _ \    | |  | ||  _   _ \ | |',
-"\ '|  _  ||  __/| || || (_) |   | |  | || | | | | ||_|',
-"\ '|_| |_| \___||_||_| \___/    |_|  |_||_| |_| |_|(_)',
-"\ '',
-"\ '',
-"\]
 
 "===================================== Git ==================================================
 nnoremap gv :GV<CR>
@@ -623,29 +683,30 @@ noremap gde :Gdelete<CR>
 let g:gitgutter_max_signs = 1500  " default value
 
 " === MarkdownPreview
-"let g:mkdp_auto_start = 1
-"let g:mkdp_auto_close = 1
-"let g:mkdp_refresh_slow = 0
-"let g:mkdp_command_for_global = 0
-"let g:mkdp_open_to_the_world = 0
-"let g:mkdp_open_ip = ''
-"let g:mkdp_echo_preview_url = 0
-"let g:mkdp_browserfunc = ''
-"let g:mkdp_preview_options = {
-			"\ 'mkit': {},
-			"\ 'katex': {},
-			"\ 'uml': {},
-			"\ 'maid': {},
-			"\ 'disable_sync_scroll': 0,
-			"\ 'sync_scroll_type': 'middle',
-			"\ 'hide_yaml_meta': 1
-			"\ }
-"let g:mkdp_markdown_css = ''
-"let g:mkdp_highlight_css = ''
-"let g:mkdp_port = ''
-"let g:mkdp_page_title = '「${name}」'
+let g:mkdp_auto_start = 1
+let g:mkdp_auto_close = 1
+let g:mkdp_refresh_slow = 0
+let g:mkdp_command_for_global = 0
+let g:mkdp_open_to_the_world = 0
+let g:mkdp_open_ip = ''
+let g:mkdp_echo_preview_url = 0
+let g:mkdp_browserfunc = ''
+let g:mkdp_preview_options = {
+            \ 'mkit': {},
+            \ 'katex': {},
+            \ 'uml': {},
+            \ 'maid': {},
+            \ 'disable_sync_scroll': 0,
+            \ 'sync_scroll_type': 'middle',
+            \ 'hide_yaml_meta': 1
+            \ }
+let g:mkdp_markdown_css = ''
+let g:mkdp_highlight_css = ''
+let g:mkdp_port = ''
+let g:mkdp_page_title = '「${name}」'
 
-" ===indentLine 代码缩进线标志线
+"
+" =============    indentLine 代码缩进线标志线 ==================================================
 let g:indentLine_char = '¦'
 let g:indentLine_color_term = 239
 "映射到ctrl+i键
@@ -703,15 +764,71 @@ let g:ag_working_path_mode="r"
 nnoremap <Leader>f :Ag<space>
 
 "===================================== Tmux ==================================================
-let g:tmux_navigator_no_mappings = 1
+"let g:tmux_navigator_no_mappings = 1
 
-nnoremap <silent> <Ctrl>space h :TmuxNavigateLeft<cr>
-nnoremap <silent> <Ctrl>space j :TmuxNavigateDown<cr>
-nnoremap <silent> <Ctrl>space k :TmuxNavigateUp<cr>
-nnoremap <silent> <Ctrl>space l :TmuxNavigateRight<cr>
-nnoremap <silent> <Ctrl>space p :TmuxNavigatePrevious<cr>
-nnoremap <silent> <Ctrl>space n :TmuxNavigateNext<cr>
+"nnoremap <silent> <Ctrl>space h :TmuxNavigateLeft<cr>
+"nnoremap <silent> <Ctrl>space j :TmuxNavigateDown<cr>
+"nnoremap <silent> <Ctrl>space k :TmuxNavigateUp<cr>
+"nnoremap <silent> <Ctrl>space l :TmuxNavigateRight<cr>
+"nnoremap <silent> <Ctrl>space p :TmuxNavigatePrevious<cr>
+"nnoremap <silent> <Ctrl>space n :TmuxNavigateNext<cr>
 
 "===================================== tabular ==================================================
 let g:tabular_loaded = 1
+
+" ===
+" === goyo
+" ===
+map <LEADER>g :Goyo<CR>
+map <LEADER>G :Goyo!<CR>
+
+" ===
+" === eleline.vim
+" ===
+"let g:airline_powerline_fonts = 0
+
+" ===
+" === Colorizer
+" ===
+let g:colorizer_syntax = 1
+
+" ===
+" === rainbow
+" ===
+let g:rainbow_active = 1
+
+" ===
+" === xtabline
+" ===
+let g:xtabline_settings = {}
+let g:xtabline_settings.enable_mappings = 0
+let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
+let g:xtabline_settings.enable_persistance = 0
+let g:xtabline_settings.last_open_first = 1
+noremap to :XTabCycleMode<CR>
+noremap \p :XTabInfo<CR>
+
+" ===
+" === Undotree
+" ===
+noremap U :UndotreeToggle<CR>
+let g:undotree_DiffAutoOpen = 1
+let g:undotree_SetFocusWhenToggle = 1
+let g:undotree_ShortIndicators = 1
+let g:undotree_WindowLayout = 2
+let g:undotree_DiffpanelHeight = 8
+let g:undotree_SplitWidth = 24
+function g:Undotree_CustomMap()
+	nmap <buffer> u <plug>UndotreeNextState
+	nmap <buffer> e <plug>UndotreePreviousState
+	nmap <buffer> U 5<plug>UndotreeNextState
+	nmap <buffer> E 5<plug>UndotreePreviousState
+endfunc
+
+" ===
+" === Anzu
+" ===
+set statusline=%{anzu#search_status()}
+nnoremap = n
+nnoremap - N
 
