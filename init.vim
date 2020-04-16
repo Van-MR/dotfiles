@@ -39,11 +39,7 @@ set autochdir
 filetype off
 call plug#begin('~/.config/nvim/plugged')
 
-" === navigation
-"Plug 'christoomey/vim-tmux-navigator'
-"Plug 'erikw/tmux-powerline'
-
-"=== airline
+"=== airline && airline-themes
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
@@ -68,22 +64,23 @@ Plug 'mattn/emmet-vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'yggdroot/indentline'
 
-" Genreal Highlighter
+" Genreal Highlighter  color
 Plug 'jaxbot/semantic-highlight.vim'
 Plug 'chrisbra/Colorizer' " Show colors with :ColorHighligh
 
 " === snippets
 Plug 'honza/vim-snippets'
-Plug 'ryanoasis/vim-devicons'
 "Plug 'SirVer/ultisnips'
 
-" ===  Search
+" ===  Search && file management
 Plug 'kien/ctrlp.vim'
 Plug 'rking/ag.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'osyo-manga/vim-anzu'
 
+" tricks
 Plug 'mhinz/vim-startify'
-Plug 'jeetsukumaran/vim-buffergator'
 Plug 'vim-scripts/BufOnly.vim'
 Plug 'anyakichi/vim-surround'
 
@@ -105,9 +102,11 @@ Plug 'mbbill/undotree'
 Plug 'kshenoy/vim-signature'
 Plug 'Lokaltog/vim-easymotion'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'jiangmiao/auto-pairs'
+"Plug 'jiangmiao/auto-pairs'
 Plug 'gorodinskiy/vim-coloresque'
 Plug 'kien/rainbow_parentheses.vim'
+"Plug 'vim-scripts/matchit.zip'
+Plug 'unblevable/quick-scope'
 
 " === javascript
 Plug 'pangloss/vim-javascript'
@@ -116,7 +115,6 @@ Plug 'mxw/vim-jsx'
 " === typescript
 Plug 'leafgarland/typescript-vim'
 Plug 'herringtondarkholme/yats.vim'
-Plug 'w0rp/ale'
 
 " dress
  Plug 'theniceboy/eleline.vim'
@@ -130,14 +128,14 @@ Plug 'wincent/terminus'
 " === tabbar
 Plug 'godlygeek/tabular'
 
-" === theme
-"Plug 'kristijanhusak/vim-hybrid-material'
-"Plug 'ajmwagar/vim-deus'
+" === colorscheme theme
 Plug 'tomasiser/vim-code-dark'
 Plug 'fcpg/vim-orbital'
-Plug 'alessandroyorba/sierra'
+Plug 'jacoborus/tender.vim'
+
 "====shell
 "Plug 'shougo/vimshell.vim'
+
 call plug#end()
 
 filetype plugin indent on
@@ -145,6 +143,14 @@ filetype plugin indent on
 "===================================== keybinding ==================================================
 "设置LEADER键
 let mapleader = " "
+
+" ------Standard Bindings basic file operation------
+" Basic file system commands
+"nnoremap <C-t> :!touch<Space>
+"nnoremap <C-e> :!crf<Space>
+"nnoremap <C-d> :!mkdir<Space>
+"nnoremap <C-m> :!mv<Space>%<Space>
+"
 
 "杜绝方向键,移动右手到方向键纯属浪费时间
 map <Left> <Nop>
@@ -158,9 +164,9 @@ noremap <LEADER>e %
 
 "修改快捷键  按键
 map S :w<CR>   "保存
+map Q :q<CR>   " 修改:q 回车退出
 noremap <C-c> zz
 map s <nop>    "去除s键删除插入功能
-map Q :q<CR>   " 修改:q 回车退出
 
 noremap J 5j
 noremap K 5k
@@ -192,6 +198,7 @@ map sl :set splitright<CR>:vsplit<CR>  "右分屏
 map sh :set nosplitright<CR>:vsplit<CR>  "左分屏
 map sk :set nosplitbelow<CR>:split<CR>  "上分屏
 map sj :set splitbelow<CR>:split<CR>  "下分屏
+
 "分屏移动
 map <LEADER>k <C-w>k
 map <LEADER>j <C-w>j
@@ -240,33 +247,11 @@ noremap <silent> <LEADER>o za
 " 打开neovim配置文件
 noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
 
-" Open Startify
+" Open Startify界面
 noremap <LEADER>ss :Startify<CR>
 
 
-" Ale static check
-nnoremap <Leader>c :ALEToggle<CR>
-nnoremap <Leader>J :ALENextWrap<CR>
-nnoremap <Leader>K :ALEPreviousWrap<CR>
-nnoremap <Leader>R :ALEFix<CR>
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-
-let g:ale_sign_error = '🔴'
-let g:ale_sign_warning = '💥'
-highlight clear ALEErrorSign
-highlight clear ALEWarningSign
-
-" Buffers mannager
-nnoremap <Leader>[ :BuffergatorMruCyclePrev<CR>
-nnoremap <Leader>] :BuffergatorMruCycleNext<CR>
-nnoremap <Leader>b :BuffergatorOpen<CR>
-
-" CtrlP
-nnoremap <Leader>p :CtrlP<CR>
-
-"===================================== keybinding ==================================================
+"===================================== basic text editor configuation ==================================================
 
 
 if has("gui_running")
@@ -307,9 +292,12 @@ set mousemodel=popup
     set termguicolors
   endif
 
+  " For Neovim 0.1.3 and 0.1.4
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
 "endif
+
 "===================================== Theme ==================================================
-syntax enable
 
 let g:enable_bold_font = 1
 let g:enable_italic_font = 1
@@ -325,12 +313,20 @@ let g:hybrid_transparent_background = 1
 "let g:sierra_Twilight = 1
 "let g:sierra_Sunset = 1
 "colorscheme sierra
-colorscheme orbital
+"
+"colorscheme orbital
+
+syntax enable
+colorscheme tender
+
+let g:lightline = { 'colorscheme': 'tender' }
 
 
 " ===AirineTheme 设置状态栏主题风格
-let g:airline_theme = 'orbital'
+let g:airline_theme = 'tender'
+"let g:airline_theme = 'orbital'
 "let g:airline_theme = 'codedark'
+"
 let g:airline_powerline_fonts = 1
 let g:airline_section_z = '%t'
 let g:airline#extensions#syntastic#enabled = 1 " Disable syntastic info
@@ -355,8 +351,12 @@ set foldmethod=manual
 " 启动 vim 时关闭折叠代码
 set nofoldenable
 
-set cursorline              " 突出显示当前行
-set magic                   " 设置魔术
+set cursorline  " 突出显示当前行
+"set cursorcolumn "突出显示当前列
+highlight CursorLine ctermbg=Yellow cterm=bold guibg=#2b2b2b 
+highlight CursorColumn ctermbg=Yellow cterm=bold guibg=#2b2b2b
+
+set magic  " 设置魔术
 " 自动缩进
 set autoindent
 set cindent
@@ -370,10 +370,8 @@ set shiftwidth=4
 set expandtab
 " 在行和段开始处使用制表符
 set smarttab
-" 显示行号
-set number
-"显示相对行号
-"set relativenumber
+" 显示行号 相对行号
+set number relativenumber
 " 历史记录数
 set history=1000
 "搜索逐字符高亮
@@ -451,7 +449,7 @@ set ignorecase
 set linespace=0
 " 增强模式中的命令行自动完成操作
 set wildmenu
-" 使回格键（backspace）正常处理indent, eol, start等
+" 使回格键（backspace）正常处理indent, eol, ntart等
 set backspace=2
 " 可以在buffer的任何地方使用鼠标（类似office中在工作区双击鼠标定位）
 set mouse-=a
@@ -549,10 +547,14 @@ let g:NERDTreeIndicatorMapCustom = {
     \ "Unknown"   : "?"
     \ }
 
+" 未指定文件，如何在vim启动时自动打开NERDTree
 autocm StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
 " 只剩 NERDTree时自动关闭
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" 不展示在nerdtree上的文件目录
 let g:NERDTreeIgnore=['\~$', 'vendor', 'bin', 'obj', 'release', 'node_modules', 'bower_components', 'dist', 'coverage', 'documentation']
 
 
@@ -625,35 +627,160 @@ let g:multi_cursor_quit_key='<Esc>'
 
 
 "===================================== COC plugins && config ==================================================
-"silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
-let g:coc_global_extensions = [ 'coc-emmet', 'coc-html', 'coc-json', 'coc-css', 'coc-prettier' , 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-eslint', 'coc-snippets', 'coc-vetur']
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-" use <tab> for trigger completion and navigate to the next complete item
+" TextEdit might fail if hidden is not set.
+set hidden
+
+" Some servers have issues with backup files, see #649.
+set nobackup
+set nowritebackup
+
+" Give more space for displaying messages.
+set cmdheight=2
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]	=~ '\s'
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-inoremap <silent><expr> <Tab>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<Tab>" :
-            \ coc#refresh()
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
-" Useful commands
-nnoremap <silent> <space>y :<C-u>CocList -A --normal yank<cr>
-nnoremap <silent> df <Plug>(coc-definition)
-nnoremap <silent> gy <Plug>(coc-type-definition)
-nnoremap <silent> gi <Plug>(coc-implementation)
-nnoremap <silent> gr <Plug>(coc-references)
-nnoremap <leader> rn <Plug>(coc-rename)
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
+" position. Coc only does snippet and additional edit on confirm.
+if exists('*complete_info')
+  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+else
+  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+endif
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+"nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap keys for applying codeAction to the current line.
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Introduce function text object
+" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
+
+" Use <TAB> for selections ranges.
+" NOTE: Requires 'textDocument/selectionRange' support from the language server.
+" coc-tsserver, coc-python are the examples of servers that support it.
+nmap <silent> <TAB> <Plug>(coc-range-select)
+xmap <silent> <TAB> <Plug>(coc-range-select)
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+
+" Mappings using CoCList:
+" Show all diagnostics.
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent> <space>x  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+"nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+"nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+
+"silent! au BufEnter,BufRead,BufNewFile * silent! unmap if
+let g:coc_global_extensions = [ 'coc-emmet', 'coc-pairs', 'coc-html', 'coc-json', 'coc-css', 'coc-prettier' , 'coc-tsserver', 'coc-yank', 'coc-lists', 'coc-eslint', 'coc-snippets', 'coc-vetur']
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" use <tab> for trigger completion and navigate to the next complete item
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " coc-translator
 nmap ts <Plug>(coc-translator-p)
 
-" === coc-prettier
+" coc-prettier
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
 nnoremap <Leader>F :Prettier<CR>
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 
 "===================================== Startify ==================================================
@@ -662,22 +789,34 @@ let g:startify_lists = [
             \ { 'type': 'bookmarks', 'header': ['	 Bookmarks']			},
             \ { 'type': 'commands',	'header': ['	 Commands']			 },
             \ ]
+let g:startify_session_autoload = 1
+"过滤列表，支持正则表达式
+let g:startify_skiplist = [
+       \ '^/tmp',
+       \ ]
 
 "===================================== Git ==================================================
 nnoremap gv :GV<CR>
 
 " === fugitive
-noremap gd :Gdiff<CR>
-noremap gs :Gstatus<CR>
-noremap gds :Gdiffsplit<CR>
-noremap gc :Gcommit<CR>
-noremap gr :Gread<CR>
-noremap ge :Gedit<CR>
-noremap gpu :Gpush<CR>
-noremap gpl :Gpull<CR>
-noremap grb :Grebase<CR>
-noremap gmv :Gmove<CR>
-noremap gde :Gdelete<CR>
+
+" fugitive git bindings
+nnoremap <LEADER>ga :Git add %:p<CR><CR>
+nnoremap <LEADER>gs :Gstatus<CR>
+"nnoremap gb :Gblame<CR>
+nnoremap <LEADER>gc :Gcommit -v -q<CR>
+nnoremap <LEADER>gt :Gcommit -v -q %:p<CR>
+nnoremap <LEADER>gd :Gdiff<CR>
+nnoremap <LEADER>ge :Gedit<CR>
+nnoremap <LEADER>gr :Gread<CR>
+nnoremap <LEADER>gw :Gwrite<CR><CR>
+nnoremap <LEADER>gl :silent! Glog<CR>:bot copen<CR>
+nnoremap <LEADER>gp :Ggrep<Space>
+nnoremap <LEADER>gm :Gmove<Space>
+nnoremap <LEADER>gb :Git branch<Space>
+nnoremap <LEADER>go :Git checkout<Space>
+nnoremap <LEADER>gps :Dispatch! git push<CR>
+nnoremap <LEADER>gpl :Dispatch! git pull<CR>
 
 " ===GitGutter
 let g:gitgutter_max_signs = 1500  " default value
@@ -706,25 +845,12 @@ let g:mkdp_port = ''
 let g:mkdp_page_title = '「${name}」'
 
 "
+
 " =============    indentLine 代码缩进线标志线 ==================================================
 let g:indentLine_char = '¦'
 let g:indentLine_color_term = 239
 "映射到ctrl+i键
 map <C-d> :IndentLinesToggle<CR>
-
-"===================================== ale syntatic checked ==================================================
-let g:ale_javascript_eslint_executable = 'eslint_d' "Faster implementation
-let g:ale_lint_on_text_changed="normal" "Lint on normal mode
-let g:ale_reason_ols_executable = '/usr/local/bin/reason-language-server'
-let g:ale_linters = {
-      \ 'javascript': ['flow', 'eslint'],
-      \ 'reason': ['ols'],
-      \}
-let g:ale_fixers = {
-      \ 'javascript': ['eslint', 'prettier'],
-      \ 'reason': ['refmt'],
-      \}
-let g:ale_fix_on_save = 1
 
 "===================================== signature  标签快捷键配置 ==================================================
 let g:SignatureMap = {
@@ -751,44 +877,26 @@ let g:SignatureMap = {
         \ 'ListLocalMarkers'   :  "m?"
         \ }
 
-"===================================== Buffergator ==================================================
-let g:buffergator_display_regime = "parentdir"
-let g:buffergator_expand_on_split = 0
-
-" ===CtrlP ignore  设置忽略的文件目录搜索
-set wildignore+=*/node_modules/*,*/dist/*,*/bower-components/*
 
 " ===Ag
 let g:ackprg = 'ag --nogroup --nocolor --column'
 let g:ag_working_path_mode="r"
-nnoremap <Leader>f :Ag<space>
+nnoremap <Leader>F :Ag<space>
 
-"===================================== Tmux ==================================================
-"let g:tmux_navigator_no_mappings = 1
-
-"nnoremap <silent> <Ctrl>space h :TmuxNavigateLeft<cr>
-"nnoremap <silent> <Ctrl>space j :TmuxNavigateDown<cr>
-"nnoremap <silent> <Ctrl>space k :TmuxNavigateUp<cr>
-"nnoremap <silent> <Ctrl>space l :TmuxNavigateRight<cr>
-"nnoremap <silent> <Ctrl>space p :TmuxNavigatePrevious<cr>
-"nnoremap <silent> <Ctrl>space n :TmuxNavigateNext<cr>
 
 "===================================== tabular ==================================================
 let g:tabular_loaded = 1
 
-" ===
 " === goyo
-" ===
-map <LEADER>g :Goyo<CR>
-map <LEADER>G :Goyo!<CR>
+map <LEADER>G :Goyo<CR>
 
 " ===
 " === eleline.vim
 " ===
-"let g:airline_powerline_fonts = 0
+let g:airline_powerline_fonts = 0
 
 " ===
-" === Colorizer
+" === Colorizer  color preview
 " ===
 let g:colorizer_syntax = 1
 
@@ -831,4 +939,27 @@ endfunc
 set statusline=%{anzu#search_status()}
 nnoremap = n
 nnoremap - N
+
+" =====FZF ========
+nnoremap <silent> <Leader>ag :Ag <C-R><C-W><CR>
+nnoremap <silent> <Leader>f :Files <CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>m :Marks<CR>
+
+" ===== CtrlP ====
+ "let g:ctrlp_map = '<c-p>'
+ "let g:ctrlp_cmd = 'CtrlP'
+nnoremap <silent> <Leader>p :CtrlP <CR>
+let g:ctrlp_working_path_mode = 'ra'
+"  设置忽略的文件目录搜索
+set wildignore+=*/node_modules/*,*/dist/*,*/bower-components/*
+
+" === BufferOnly =======
+noremap bo :Bufonly<CR>
+
+" Vim Quickscope
+" Trigger a highlight in the appropriate direction when pressing these keys:
+let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+highlight QuickScopePrimary guifg='#afff5f' gui=underline ctermfg=155 cterm=underline
+highlight QuickScopeSecondary guifg='#5fffff' gui=underline ctermfg=81 cterm=underline
 
