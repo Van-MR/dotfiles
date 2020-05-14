@@ -1,0 +1,97 @@
+{
+	"coc.preferences.enableFloatHighlight": true,
+	"coc.preferences.snippetStatusText": "Ⓢ ",
+	"coc.preferences.extensionUpdateCheck": "daily",
+	"suggest.detailMaxLength": 60,
+	"suggest.enablePreselect": false,
+	"suggest.timeout": 5000,
+	"suggest.enablePreview": true,
+	"suggest.detailField": "preview",
+	"suggest.triggerCompletionWait": 100,
+	"suggest.echodocSupport": true,
+	"diagnostic.signOffset": 1,
+	"diagnostic.errorSign": "×",
+	"diagnostic.warningSign": "»",
+	"diagnostic.infoSign": "ღ",
+	"diagnostic.hintSign": "ஐ",
+	"diagnostic.displayByAle": false,
+	"diagnostic.refreshOnInsertMode": false,
+	"diagnostic.refreshAfterSave": false,
+	"diagnostic.checkCurrentLine": true,
+	"diagnostic.virtualTextPrefix": " ❯❯❯ ",
+	"diagnostic.virtualText": true,
+	"codeLens.enable": true,
+	"list.previewHighlightGroup": "Statement",
+	"list.nextKeymap": "<C-e>",
+	"list.previousKeymap": "<C-u>",
+	"yank.enableCompletion" : false,
+	"html.format.enable": true,
+	"javascript.referencesCodeLens.enable": false,
+	"javascript.showUnused": true,
+	"javascript.suggest.names": true,
+	"javascript.suggestionActions.enabled": true,
+	"languageserver": {
+		"lua": {
+			"command": "lua-lsp",
+			"filetypes": ["lua"]
+		},
+		"golang": {
+			"command": "gopls",
+			"rootPatterns": ["go.mod"],
+			"filetypes": ["go"],
+			"initializationOptions": {
+				"gocodeCompletionEnabled": true,
+				"diagnosticsEnabled": true,
+				"lintTool": "golint"
+			}
+		},
+		"bash": {
+			"command": "bash-language-server",
+			"args": ["start"],
+			"filetypes": ["sh"],
+			"ignoredRootPaths": []
+		},
+		"ccls": {
+			"command": "ccls",
+			"filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
+			"rootPatterns": [".ccls", ".ccls-root", "compile_commands.json", ".git/", ".hg/"],
+			"initializationOptions": {
+				"cache": {
+					"directory": "/tmp/ccls"
+				}
+			}
+		}
+	},
+
+    "suggest.triggerAfterInsertEnter": true,
+	"suggest.noselect": false,
+	"suggest.minTriggerInputLength": 2,
+	"suggest.acceptSuggestionOnCommitCharacter": true,
+	"suggest.snippetIndicator": "►",
+
+	"tsserver.enable": true,
+	"tsserver.formatOnType": false,
+	"tsserver.enableJavascript": true,
+
+	"typescript.validate.enable": true,
+	"typescript.format.placeOpenBraceOnNewLineForFunctions": true,
+	"typescript.suggest.completeFunctionCalls": true,
+	"typescript.suggest.paths": true,
+	"typescript.suggest.enabled": true,
+	"typescript.suggest.autoImports": true,
+	"typescript.updateImportsOnFileMove.enable": true,
+	
+	"tslint.autoFixOnSave": true,
+	"tslint.alwaysShowRuleFailuresAsWarnings": false,
+
+	"prettier.requireConfig": false,
+	"prettier.tslintIntegration": false,
+	"prettier.eslintIntegration": false,
+	"prettier.stylelintIntegration": false,
+	"prettier.statusItemText": "Prettier",
+	"coc.preferences.formatOnSaveFiletypes": ["typescriptreact", "typescript", "javascript", "html", "css", "scss", "vue"],
+	"diagnostic.messageTarget": "echo",
+	"suggest.floatEnable": false,
+	"signature.target": "echo",
+	"coc.preferences.hoverTarget": "echo"
+}

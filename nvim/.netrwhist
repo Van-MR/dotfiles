@@ -1,0 +1,12 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =2
+let g:netrw_dirhist_2='/Users/aA/.config/nvim/keys'
+let g:netrw_dirhist_1='/Users/aA/.config/nvim'
+let g:netrw_dirhist_0='/Users/aA/dotfiles'
+let g:netrw_dirhist_9='/Users/aA/Desktop/chibi/cb'
+let g:netrw_dirhist_8='/Users/aA/Desktop/chibi/cb/src/views'
+let g:netrw_dirhist_7='/Users/aA/Desktop/chibi/cb/src'
+let g:netrw_dirhist_6='/Users/aA/Desktop/chibi/cb'
+let g:netrw_dirhist_5='/Users/aA/Desktop/chibi/cb/node_modules'
+let g:netrw_dirhist_4='/Users/aA/Desktop/chibi/cb'
+let g:netrw_dirhist_3='/Users/aA/.config/nvim'
